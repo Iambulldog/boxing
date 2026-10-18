@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ค่ายมวย ส.สินชัย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c8102e;
+    --red-dark: #8f0b20;
+    --gold: #f2b705;
+    --ink: #111;
+    --bg: #0d0d0d;
+    --panel: #181818;
+    --text: #f5f5f5;
+    --muted: #a6a6a6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Prompt", "Sarabun", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 72px 0; }
+  h1, h2, h3 { font-weight: 800; line-height: 1.3; }
+  h2 { font-size: 2rem; margin-bottom: 12px; }
+  h2 span { color: var(--red); }
+  .lead { color: var(--muted); max-width: 640px; margin-bottom: 36px; }
+  .btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-weight: 700;
+    transition: transform .15s, background .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-red:hover { background: var(--red-dark); }
+  .btn-outline { border: 2px solid var(--gold); color: var(--gold); }
+  .btn-outline:hover { background: var(--gold); color: var(--ink); }
+
+  /* Navigation */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(13,13,13,.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid #222;
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+  .logo { font-weight: 800; font-size: 1.1rem; }
+  .logo b { color: var(--gold); }
+  nav ul { display: flex; gap: 22px; list-style: none; font-size: .92rem; }
+  nav ul a:hover { color: var(--gold); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    background:
+      linear-gradient(100deg, rgba(10,10,10,.94) 30%, rgba(10,10,10,.55) 65%, rgba(200,16,46,.35)),
+      url("images/hero.jpg") center / cover no-repeat,
+      #000;
+    padding-top: 66px;
+  }
+  .hero .eyebrow {
+    color: var(--gold); font-weight: 700; letter-spacing: .15em;
+    text-transform: uppercase; font-size: .85rem;
+  }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); margin: 14px 0 18px; }
+  .hero h1 em { font-style: normal; color: var(--red); }
+  .hero p { color: #d6d6d6; max-width: 560px; margin-bottom: 30px; font-size: 1.05rem; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* Stats strip */
+  .stats { background: var(--red); padding: 26px 0; }
+  .stats .wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; text-align: center; }
+  .stats strong { display: block; font-size: 2rem; font-weight: 800; }
+  .stats span { font-size: .9rem; opacity: .9; }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .about-grid p { color: #cfcfcf; margin-bottom: 14px; }
+
+  /* Image slots (รอใส่รูป) */
+  .img-slot {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--panel);
+    border: 2px dashed #333;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #555; font-size: .9rem;
+  }
+  .img-slot.tall { aspect-ratio: 3 / 4; }
+  .img-slot.wide { aspect-ratio: 16 / 9; }
+  .img-slot.square { aspect-ratio: 1 / 1; }
+
+  /* Photos */
+  .photo {
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: 10px; border: 1px solid #242424;
+    transition: transform .3s, filter .3s;
+    filter: saturate(.95);
+  }
+  .about-photo { box-shadow: 0 20px 50px rgba(0,0,0,.5); }
+  .gallery .photo:hover { transform: scale(1.03); filter: saturate(1.15); }
+  .contact-photo { aspect-ratio: auto; height: 100%; min-height: 280px; max-height: 460px; }
+
+  /* Trainer avatar (ไม่ใช้รูปบุคคล) */
+  .avatar {
+    width: 100%; aspect-ratio: 1 / 1; border-radius: 10px;
+    background: radial-gradient(circle at 50% 40%, #2a2a2a, #121212 70%);
+    border: 1px solid #262626;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .avatar svg { width: 42%; height: auto; filter: drop-shadow(0 8px 18px rgba(200,16,46,.35)); }
+  .photo-credit { font-size: .78rem; margin-top: 6px; opacity: .7; }
+
+  /* Classes */
+  .alt { background: var(--panel); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+  .card {
+    background: var(--bg);
+    border: 1px solid #242424;
+    border-radius: 10px;
+    padding: 28px 24px;
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover { border-color: var(--red); transform: translateY(-4px); }
+  .card .icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--red); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; margin-bottom: 16px;
+  }
+  .card h3 { font-size: 1.15rem; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: .95rem; }
+
+  /* Schedule */
+  table {
+    width: 100%; border-collapse: collapse;
+    background: var(--panel); border-radius: 10px; overflow: hidden;
+  }
+  th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid #242424; }
+  th { background: var(--red-dark); font-weight: 700; }
+  td.time { color: var(--gold); font-weight: 600; white-space: nowrap; }
+  .table-wrap { overflow-x: auto; }
+
+  /* Trainers */
+  .trainers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; }
+  .trainer h3 { margin-top: 14px; font-size: 1.1rem; }
+  .trainer p { color: var(--muted); font-size: .9rem; }
+
+  /* Gallery */
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 760px) { .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+
+  /* Pricing */
+  .prices { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+  .price {
+    background: var(--panel); border-radius: 10px; padding: 32px 26px;
+    text-align: center; border: 1px solid #242424;
+  }
+  .price.featured { border-color: var(--gold); position: relative; }
+  .price .tag {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: var(--ink); font-size: .75rem; font-weight: 700;
+    padding: 3px 12px; border-radius: 20px;
+  }
+  .price h3 { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
+  .price .amount { font-size: 2.4rem; font-weight: 800; margin: 10px 0; }
+  .price .amount small { font-size: .9rem; color: var(--muted); font-weight: 400; }
+  .price ul { list-style: none; color: #cfcfcf; font-size: .92rem; margin: 16px 0 22px; }
+  .price li { padding: 4px 0; }
+
+  /* Contact */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .contact-item { margin-bottom: 18px; }
+  .contact-item strong { color: var(--gold); display: block; font-size: .9rem; }
+  .map-slot { min-height: 280px; border-radius: 10px; }
+
+  footer {
+    background: #050505; border-top: 1px solid #1d1d1d;
+    padding: 28px 0; text-align: center; color: var(--muted); font-size: .88rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 760px) {
+    nav ul { display: none; }
+    section { padding: 56px 0; }
+    h2 { font-size: 1.6rem; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="wrap">
+    <a href="#top" class="logo">ค่ายมวย <b>ส.สินชัย</b></a>
+    <ul>
+      <li><a href="#about">เกี่ยวกับเรา</a></li>
+      <li><a href="#classes">คลาส</a></li>
+      <li><a href="#schedule">ตารางฝึก</a></li>
+      <li><a href="#trainers">ครูมวย</a></li>
+      <li><a href="#gallery">แกลเลอรี</a></li>
+      <li><a href="#prices">ราคา</a></li>
+      <li><a href="#contact">ติดต่อ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Muay Thai Training Camp</p>
+    <h1>ค่ายมวย <em>ส.สินชัย</em></h1>
+    <p>ฝึกมวยไทยแบบดั้งเดิม ด้วยครูมวยประสบการณ์จริง เหมาะทั้งผู้เริ่มต้น นักกีฬา และผู้ที่ต้องการออกกำลังกายให้แข็งแรง</p>
+    <div class="hero-actions">
+      <a href="#prices" class="btn btn-red">ดูราคาและแพ็กเกจ</a>
+      <a href="#contact" class="btn btn-outline">จองทดลองฝึกฟรี</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STATS ============ -->
+<div class="stats">
+  <div class="wrap">
+    <div><strong>[00]+</strong><span>ปีแห่งประสบการณ์</span></div>
+    <div><strong>[00]+</strong><span>นักมวยที่ผ่านการฝึก</span></div>
+    <div><strong>[00]</strong><span>แชมป์ที่เคยสร้างชื่อ</span></div>
+    <div><strong>[00]</strong><span>ปีที่เปิดให้บริการ</span></div>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div>
+      <h2>เกี่ยวกับ <span>ค่ายเรา</span></h2>
+      <p>ค่ายมวย ส.สินชัย ก่อตั้งขึ้นเพื่อถ่ายทอดศิลปะการต่อสู้มวยไทยอย่างแท้จริง ทั้งเทคนิค วินัย และจิตใจของนักสู้ ที่นี่ให้ความสำคัญกับทั้งการฝึกซ้อม โภชนาการ และการดูแลสุขภาพของนักเรียนทุกคน</p>
+      <p>ไม่ว่าคุณจะมาเพื่อแข่งขัน เพื่อป้องกันตัว หรือเพื่อสุขภาพที่ดี เรามีโปรแกรมที่ปรับให้เหมาะกับเป้าหมายของคุณ</p>
+    </div>
+    <img class="photo about-photo" src="images/about.jpg" alt="บรรยากาศภายในค่ายมวย เวทีและกระสอบทราย" loading="lazy">
+  </div>
+</section>
+
+<!-- ============ CLASSES ============ -->
+<section id="classes" class="alt">
+  <div class="wrap">
+    <h2>คลาส <span>ฝึกซ้อม</span></h2>
+    <p class="lead">เลือกโปรแกรมที่เหมาะกับระดับและเป้าหมายของคุณ</p>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">1</div>
+        <h3>มวยไทยสำหรับผู้เริ่มต้น</h3>
+        <p>เรียนท่าพื้นฐาน การยืน การ์ด การเตะ ศอก เข่า ค่อยๆ พัฒนาไปตามความพร้อม</p>
+      </div>
+      <div class="card">
+        <div class="icon">2</div>
+        <h3>มวยไทยสำหรับนักกีฬา</h3>
+        <p>โปรแกรมเข้มข้นสำหรับผู้ที่ต้องการขึ้นชกจริง ทั้งเทคนิค สปาร์ริง และการเตรียมร่างกาย</p>
+      </div>
+      <div class="card">
+        <div class="icon">3</div>
+        <h3>ฟิตเนสมวยไทย</h3>
+        <p>ออกกำลังกายเผาผลาญแคลอรี่ เสริมความแข็งแรง ความอดทน และความคล่องตัว เหมาะกับทุกเพศทุกวัย</p>
+      </div>
+      <div class="card">
+        <div class="icon">4</div>
+        <h3>คลาสเด็กและเยาวชน</h3>
+        <p>สร้างวินัย ความมั่นใจ และสุขภาพที่ดี ภายใต้การดูแลของครูผู้มีประสบการณ์</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCHEDULE ============ -->
+<section id="schedule">
+  <div class="wrap">
+    <h2>ตาราง <span>การฝึก</span></h2>
+    <p class="lead">[แก้ไขเวลาตามตารางจริงของค่าย]</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>วัน</th><th>เช้า</th><th>บ่าย</th><th>เย็น</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>จันทร์ - ศุกร์</td><td class="time">[00:00 - 00:00]</td><td class="time">[00:00 - 00:00]</td><td class="time">[00:00 - 00:00]</td></tr>
+          <tr><td>เสาร์</td><td class="time">[00:00 - 00:00]</td><td class="time">[00:00 - 00:00]</td><td class="time">-</td></tr>
+          <tr><td>อาทิตย์</td><td class="time">[00:00 - 00:00]</td><td class="time">-</td><td class="time">-</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRAINERS ============ -->
+<section id="trainers" class="alt">
+  <div class="wrap">
+    <h2>ครู<span>มวย</span></h2>
+    <p class="lead">ทีมครูผู้ฝึกสอนที่มีประสบการณ์จากสังเวียนจริง</p>
+    <div class="trainers">
+      <div class="trainer">
+        <div class="avatar" aria-hidden="true"><svg viewBox="0 0 120 130"><path d="M22 62C14 34 34 10 64 10c30 0 44 22 40 48-2 14-10 22-22 24v10H34V82c-8-4-11-12-12-20z" fill="#c8102e"/><path d="M22 58c-10-2-12-18 0-22" fill="#c8102e"/><path d="M40 30c10-6 26-6 36 2" stroke="#ff6b7d" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="32" y="92" width="52" height="26" rx="6" fill="#f2b705"/><path d="M36 105h44" stroke="#111" stroke-width="3"/></svg></div>
+        <h3>[ชื่อครูมวย]</h3>
+        <p>[ประวัติ / ผลงาน / ตำแหน่ง]</p>
+      </div>
+      <div class="trainer">
+        <div class="avatar" aria-hidden="true"><svg viewBox="0 0 120 130"><path d="M22 62C14 34 34 10 64 10c30 0 44 22 40 48-2 14-10 22-22 24v10H34V82c-8-4-11-12-12-20z" fill="#c8102e"/><path d="M22 58c-10-2-12-18 0-22" fill="#c8102e"/><path d="M40 30c10-6 26-6 36 2" stroke="#ff6b7d" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="32" y="92" width="52" height="26" rx="6" fill="#f2b705"/><path d="M36 105h44" stroke="#111" stroke-width="3"/></svg></div>
+        <h3>[ชื่อครูมวย]</h3>
+        <p>[ประวัติ / ผลงาน / ตำแหน่ง]</p>
+      </div>
+      <div class="trainer">
+        <div class="avatar" aria-hidden="true"><svg viewBox="0 0 120 130"><path d="M22 62C14 34 34 10 64 10c30 0 44 22 40 48-2 14-10 22-22 24v10H34V82c-8-4-11-12-12-20z" fill="#c8102e"/><path d="M22 58c-10-2-12-18 0-22" fill="#c8102e"/><path d="M40 30c10-6 26-6 36 2" stroke="#ff6b7d" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="32" y="92" width="52" height="26" rx="6" fill="#f2b705"/><path d="M36 105h44" stroke="#111" stroke-width="3"/></svg></div>
+        <h3>[ชื่อครูมวย]</h3>
+        <p>[ประวัติ / ผลงาน / ตำแหน่ง]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery">
+  <div class="wrap">
+    <h2>แกลเลอรี <span>ภาพกิจกรรม</span></h2>
+    <p class="lead">บรรยากาศการฝึกซ้อมและการแข่งขัน</p>
+    <div class="gallery">
+      <img class="photo" src="images/gallery-1.jpg" alt="กระสอบทรายแขวนในยิม" loading="lazy">
+      <img class="photo" src="images/gallery-2.jpg" alt="นวมขาวบนพื้นเวที" loading="lazy">
+      <img class="photo" src="images/gallery-3.jpg" alt="กระสอบทรายสีแดงเรียงแถว" loading="lazy">
+      <img class="photo" src="images/gallery-4.jpg" alt="มุมเวทีมวยและเชือกเวที" loading="lazy">
+      <img class="photo" src="images/gallery-5.jpg" alt="กระสอบทรายสีดำแขวนในห้องฝึก" loading="lazy">
+      <img class="photo" src="images/gallery-6.jpg" alt="นวมมวยสีแดงแขวนผนัง" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICES ============ -->
+<section id="prices" class="alt">
+  <div class="wrap">
+    <h2>แพ็กเกจ <span>และราคา</span></h2>
+    <p class="lead">[แก้ไขราคาตามจริง]</p>
+    <div class="prices">
+      <div class="price">
+        <h3>ทดลองฝึก</h3>
+        <div class="amount">[000] <small>บาท / ครั้ง</small></div>
+        <ul>
+          <li>ฝึกครั้งเดียว</li>
+          <li>อุปกรณ์พื้นฐาน</li>
+          <li>คำแนะนำจากครูมวย</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline">จองเลย</a>
+      </div>
+      <div class="price featured">
+        <span class="tag">ยอดนิยม</span>
+        <h3>รายเดือน</h3>
+        <div class="amount">[0,000] <small>บาท / เดือน</small></div>
+        <ul>
+          <li>ฝึกไม่จำกัดครั้ง</li>
+          <li>ตารางฝึกตามที่กำหนด</li>
+          <li>ดูแลโดยครูมวย</li>
+        </ul>
+        <a href="#contact" class="btn btn-red">สมัครสมาชิก</a>
+      </div>
+      <div class="price">
+        <h3>นักกีฬา / เข้มข้น</h3>
+        <div class="amount">[0,000] <small>บาท / เดือน</small></div>
+        <ul>
+          <li>โปรแกรมเฉพาะบุคคล</li>
+          <li>สปาร์ริงและเตรียมขึ้นชก</li>
+          <li>ตรวจสอบสุขภาพประจำเดือน</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline">สอบถาม</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <h2>ติด<span>ต่อเรา</span></h2>
+      <p class="lead">สนใจทดลองฝึกหรือสอบถามข้อมูล ทักมาได้เลย</p>
+      <div class="contact-item">
+        <strong>ที่อยู่</strong>
+        [ใส่ที่อยู่ค่ายมวย]
+      </div>
+      <div class="contact-item">
+        <strong>โทรศัพท์</strong>
+        [0X-XXX-XXXX]
+      </div>
+      <div class="contact-item">
+        <strong>LINE</strong>
+        [@ไอดีไลน์]
+      </div>
+      <div class="contact-item">
+        <strong>เวลาทำการ</strong>
+        [00:00 - 00:00 น. ทุกวัน]
+      </div>
+      <div style="margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="#" class="btn btn-red">โทรเลย</a>
+        <a href="#" class="btn btn-outline">แอดไลน์</a>
+      </div>
+    </div>
+    <img class="photo contact-photo" src="images/contact.jpg" alt="ห้องฝึกและเวทีมวยภายในค่าย" loading="lazy">
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 ค่ายมวย ส.สินชัย. สงวนลิขสิทธิ์</p>
+    <p class="photo-credit">ภาพประกอบจาก Pexels</p>
+  </div>
+</footer>
+
+</body>
+</html>
