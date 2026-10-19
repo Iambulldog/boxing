@@ -70,6 +70,20 @@
       url("images/hero.jpg") center / cover no-repeat,
       #000;
     padding-top: 66px;
+    position: relative; overflow: hidden;
+  }
+  .hero > .wrap { position: relative; z-index: 1; width: 100%; }
+  .hero-boxer {
+    position: absolute; right: 0; bottom: 0; top: 66px;
+    width: min(46vw, 620px); height: auto;
+    object-fit: cover; object-position: 50% 20%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 35%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 35%);
+    filter: saturate(.9) contrast(1.05);
+    opacity: .9;
+  }
+  @media (max-width: 760px) {
+    .hero-boxer { width: 100%; opacity: .28; -webkit-mask-image: none; mask-image: none; }
   }
   .hero .eyebrow {
     color: var(--gold); font-weight: 700; letter-spacing: .15em;
@@ -222,6 +236,7 @@
 
 <!-- ============ HERO ============ -->
 <header class="hero" id="top">
+  <img class="hero-boxer" src="images/boxer.jpg" alt="นักมวยหญิงสวมนวม ยืนหันหลังในห้องฝึก" fetchpriority="high">
   <div class="wrap">
     <p class="eyebrow">Muay Thai Training Camp</p>
     <h1>ค่ายมวย <em>ส.สินชัย</em></h1>
